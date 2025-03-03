@@ -11,6 +11,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/stripe/stripe-go/v72"
+	"github.com/stripe/stripe-go/v72/paymentintent"
 )
 
 // EmailValidationResponse represents the API response structure
@@ -117,10 +119,13 @@ func main() {
 		log.Printf("Warning: .env file not found")
 	}
 
+	// Set up Stripe
+	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
+
 	// Set up Gin router
 	router := gin.Default()
 
-	// Serve static files - Add these lines
+	// Serve static files
 	router.Static("/static", "./static")
 	router.StaticFile("/", "./static/index.html")
 
@@ -142,6 +147,20 @@ func main() {
 	router.GET("/validate", ValidateEmailHandler)
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "healthy"})
+	})
+
+	// Payment Intent Endpoint
+	router.POST("/create-payment-intent", func(c *gin.Context) {
+		params := &stripe.PaymentIntentParams{
+			Amount:   stripe.Int64(99), // Amount in cents
+			Currency: stripe.String(string(stripe.CurrencyUSD)),
+		}
+		pi, err := paymentintent.New(params)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"clientSecret": pi.ClientSecret})
 	})
 
 	// Start server

@@ -6,6 +6,7 @@
     <title>Don't Let Your Customers Fool You - Email Validation API</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #1a365d 0%, #2563eb 100%);
@@ -21,6 +22,23 @@
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 4rem; /* This accounts for the fixed header */
+        }
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a365d;
+        }
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #4b5563;
         }
     </style>
 </head>
@@ -181,8 +199,8 @@
     <section id="features" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-900">Why Choose Our API?</h2>
-                <p class="text-gray-600 mt-4">Comprehensive email validation that keeps your platform secure</p>
+                <h2 class="section-title">Why Choose Our API?</h2>
+                <p class="section-subtitle mt-4">Comprehensive email validation that keeps your platform secure</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="p-6 bg-gray-50 rounded-xl custom-shadow">
@@ -214,14 +232,14 @@
     <section id="demo" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-xl shadow-lg p-8">
-                <h3 class="text-2xl font-bold mb-6">Try it yourself</h3>
+                <h3 class="section-title mb-6">Try it yourself</h3>
                 <div class="space-y-6">
                     <div class="flex space-x-4">
                         <input type="email" id="email-input" 
                                class="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
                                placeholder="Enter any email address...">
                         <button onclick="validateEmail()" 
-                                class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition">
+                                class="btn-primary px-6 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition">
                             Validate Email
                         </button>
                     </div>
@@ -234,7 +252,7 @@
     <!-- Documentation Section -->
     <section id="docs" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-3xl font-bold mb-12">API Documentation</h3>
+            <h3 class="section-title mb-12">API Documentation</h3>
             
             <div class="space-y-12">
                 <div>
@@ -285,45 +303,24 @@
         </div>
     </section>
 
-    <!-- Replace the entire pricing section with this donation section -->
-    <section id="donate" class="py-20 bg-gray-50">
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900">Support This Project</h2>
-                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
-                    This is a free, open-source project. If you find it useful, consider supporting its development and maintenance.
+                <h2 class="section-title">Get Started for $0.99</h2>
+                <p class="section-subtitle mt-4">
+                    Access premium features with a one-time payment of $0.99.
                 </p>
-            </div>
-            
-            <div class="max-w-lg mx-auto bg-white rounded-xl shadow-lg p-8">
-                <div class="text-center">
-                    <i class="fas fa-heart text-4xl text-red-500 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-4">Buy Me a Coffee</h3>
-                    <p class="text-gray-600 mb-6">
-                        Help keep this service free and open source for everyone.
-                    </p>
-                    <div class="space-y-4">
-                        <a href="https://github.com/sponsors/yourusername" target="_blank" 
-                           class="inline-flex items-center justify-center w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                            <i class="fab fa-github mr-2"></i> Sponsor on GitHub
-                        </a>
-                        <a href="https://ko-fi.com/yourusername" target="_blank"
-                           class="inline-flex items-center justify-center w-full px-4 py-3 bg-[#29abe0] text-white rounded-lg hover:bg-[#228dc0] transition">
-                            <i class="fas fa-coffee mr-2"></i> Buy me a Coffee
-                        </a>
-                        <a href="https://paypal.me/yourusername" target="_blank"
-                           class="inline-flex items-center justify-center w-full px-4 py-3 bg-[#003087] text-white rounded-lg hover:bg-[#002872] transition">
-                            <i class="fab fa-paypal mr-2"></i> Donate with PayPal
-                        </a>
-                    </div>
-                </div>
             </div>
 
-            <div class="mt-12 text-center text-gray-600">
-                <p class="max-w-2xl mx-auto">
-                    All donations go directly towards hosting costs, maintaining the API's disposable email database, 
-                    and adding new features. Thank you for your support! ❤️
-                </p>
+            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8">
+                <form id="payment-form">
+                    <div id="card-element" class="mb-4"></div>
+                    <button id="submit" class="btn-primary w-full py-3 rounded-lg transition">
+                        Pay $0.99
+                    </button>
+                    <div id="payment-message" class="hidden mt-4 text-center"></div>
+                </form>
             </div>
         </div>
     </section>
@@ -438,6 +435,38 @@
 
         // Start the animation when the page loads
         animateCounter();
+
+        const stripe = Stripe('your-publishable-key-here'); // Replace with your Stripe publishable key
+
+        const elements = stripe.elements();
+        const cardElement = elements.create('card');
+        cardElement.mount('#card-element');
+
+        const form = document.getElementById('payment-form');
+        const paymentMessage = document.getElementById('payment-message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const { clientSecret } = await fetch('/create-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+            }).then((r) => r.json());
+
+            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: cardElement,
+                },
+            });
+
+            if (error) {
+                paymentMessage.textContent = error.message;
+                paymentMessage.classList.remove('hidden');
+            } else if (paymentIntent.status === 'succeeded') {
+                paymentMessage.textContent = 'Payment succeeded!';
+                paymentMessage.classList.remove('hidden');
+            }
+        });
     </script>
 </body>
 </html> 
