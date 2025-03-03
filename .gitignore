@@ -1,0 +1,25 @@
+# Environment variables
+.env
+
+# Binary files
+main
+tempmailblock
+
+# IDE specific files
+.idea/
+.vscode/
+
+# OS specific files
+.DS_Store
+*.swp
+*.swo
+
+# Go specific
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work 

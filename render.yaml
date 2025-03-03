@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: email-validator-api
+    env: docker
+    buildCommand: docker build -t email-validator-api .
+    startCommand: docker run -p $PORT:8080 email-validator-api
+    envVars:
+      - key: MAILBOXLAYER_API_KEY
+        sync: false
+      - key: PORT
+        value: 8080 
